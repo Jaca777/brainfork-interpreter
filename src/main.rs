@@ -2,9 +2,9 @@
 // 26.06.2017
 
 extern crate rand;
-mod machine;
+pub mod machine;
 mod interpreter;
-mod machineinterface;
+pub mod machineruntime;
 
 use std::io;
 use std::cmp::Ordering;

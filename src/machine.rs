@@ -1,23 +1,35 @@
 // Author: Jaca777
 // 26.06.2017
-
 use std::result;
 
-trait Navigable: Sized {
+pub trait Navigable: Sized {
     fn forward(&mut self) -> Result<(), &'static str>;
     fn backward(&mut self) -> Result<(), &'static str>;
 }
 
-trait Data<T> {
+pub trait Data<T> {
     fn increment(&mut self);
     fn decrement(&mut self);
     fn access(&self) -> T;
 }
 
-struct Machine {
+pub enum MachineState {
+    Idle,
+    Running,
+    Interrupted { cause: &'static str }
+}
+
+pub struct Machine {
+    state: MachineState,
     pointer: usize,
     capacity: usize,
     tape: Vec<i8>
+}
+
+impl Machine {
+    pub fn interrupt(&mut self, cause: &'static str) {
+        self.state = MachineState::Interrupted { cause }
+    }
 }
 
 impl Navigable for Machine {
@@ -29,7 +41,7 @@ impl Navigable for Machine {
     }
 
     fn backward(&mut self) -> Result<(), &'static str> {
-        if self.pointer > 0{
+        if self.pointer > 0 {
             self.pointer -= 1;
             Ok(())
         } else { Err("Pointer already points at a 0 index - unable to move it backwards.") }

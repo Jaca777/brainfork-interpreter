@@ -4,3 +4,4 @@ target/
 *.toml
 *.iml
 
+.idea/
