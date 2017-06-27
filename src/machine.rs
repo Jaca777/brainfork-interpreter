@@ -10,6 +10,7 @@ pub trait Navigable: Sized {
 pub trait Data<T> {
     fn increment(&mut self);
     fn decrement(&mut self);
+    fn set(&mut self, value: T);
     fn access(&self) -> T;
 }
 
@@ -29,6 +30,10 @@ pub struct Machine {
 impl Machine {
     pub fn interrupt(&mut self, cause: &'static str) {
         self.state = MachineState::Interrupted { cause }
+    }
+
+    pub fn state(&self) -> MachineState {
+        self.state
     }
 }
 
@@ -57,6 +62,10 @@ impl Data<i8> for Machine {
     fn decrement(&mut self) {
         let curr_value = self.access();
         self.tape[self.pointer] = curr_value + 1;
+    }
+
+    fn set(&mut self, value: i8) {
+        self.tape[self.pointer] = value;
     }
 
     fn access(&self) -> i8 {
